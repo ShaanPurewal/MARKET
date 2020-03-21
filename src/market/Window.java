@@ -28,9 +28,10 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     static FileHandler fileHandler = new FileHandler();
     static String EXCHANGE = ".TO";
     static String currentPage = "Main";
+    static String decision = "CLOSED";
 
     public static String getTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss a");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E, dd-MMM-yyyy HH:mm:ss a");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
@@ -163,7 +164,11 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_ACCOUNTActionPerformed
 
     private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
-        openBank();
+        if(decision.equalsIgnoreCase("CLOSED")){
+            JOptionPane.showMessageDialog(this, "The MARKET is currently closed!");
+        }else{
+            openBank();
+        }
     }//GEN-LAST:event_SEARCHActionPerformed
 
     private void CONFIGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CONFIGActionPerformed
@@ -245,18 +250,25 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     // End of variables declaration//GEN-END:variables
 
     private static void runTime() {
-        String TIME = getTime();
+        String MASTER = getTime();
+        String DAY = MASTER.substring(0, MASTER.indexOf(" ") - 1);
+        String TIME = MASTER.substring(MASTER.indexOf(":") - 2);
         int HOUR = Integer.parseInt(TIME.substring(0, 2));
         int MINUTE = Integer.parseInt(TIME.substring(3, 5));
-        String decision;
-        if (HOUR < 16 && HOUR >= 10) {
-            decision = "OPEN";
-        } else if (HOUR == 9 && MINUTE >= 30) {
-            decision = "OPEN";
-        } else {
+
+        if (DAY.equalsIgnoreCase("Sat") || DAY.equalsIgnoreCase("Sun")) {
             decision = "CLOSED";
+        }else{
+            if (HOUR < 16 && HOUR >= 10) {
+                decision = "OPEN";
+            } else if (HOUR == 9 && MINUTE >= 30) {
+                decision = "OPEN";
+            } else {
+                decision = "CLOSED";
+            }
         }
-        text.setText("<html><body><center>The current time is: " + TIME + "<br>and the market is " + decision + "</center></body></html>");
+
+        text.setText("<html><body><center>The current date is: " + MASTER + "<br>and the market is " + decision + "</center></body></html>");
     }
 
     private void openMain() {
@@ -303,7 +315,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
 
     private void openBank() {
         timer.cancel();
-        
+
         ACCOUNT.setVisible(false);
         CONFIG.setVisible(false);
         SEARCH.setVisible(false);
@@ -342,7 +354,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
                             fileHandler.buyAccount(TKRSYM.getText(), MARKET.getText(), Integer.parseInt(SHARES.getText()));
                             fileHandler.saveFile();
                             text.setText("Purchase Complete");
-                        }else{
+                        } else {
                             text.setText("Order Cancelled");
                         }
 

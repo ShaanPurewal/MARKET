@@ -14,27 +14,42 @@ import java.util.logging.Logger;
  * @author Purew
  */
 public class OrderInfo extends javax.swing.JFrame {
-    
+
     FileHandler fileHandler = new FileHandler();
-    
+
     /**
      * Creates new form InvestmentsInfo
      */
     public OrderInfo(Stocks stock, int i) throws IOException {
         initComponents();
-        
-        
-        String Ordername = stock.orders[i].TKR;
-        String name = stock.NAME;
-        fileHandler.loadAccount();
-        String currentPrice = fileHandler.readAccount(name.substring(0, name.indexOf(".")), name.substring(name.indexOf(".")));
-        double calculation = (stock.STOCKS * Double.parseDouble(currentPrice)) - (stock.orders[i].PRICE * stock.STOCKS);
-        
-        text.setText("<html><body>" + Ordername + "<br> <br>" + 
-                "You own " + stock.orders[i].SHARES + " shares" + "<br> <br>" +
-                "You bought these shares at a price of $" + stock.orders[i].PRICE + " CAD<br> <br>" +
-                "The current price per share is $" + currentPrice + " CAD<br> <br>" +
-                "Your net income from this trade is " + calculation + "</body></html>");
+
+        if (i != -1) {
+            String Ordername = stock.orders[i].TKR;
+            String name = stock.NAME;
+            fileHandler.loadAccount();
+            String currentPrice = fileHandler.readAccount(name.substring(0, name.indexOf(".")), name.substring(name.indexOf(".")));
+            double calculation = (stock.orders[i].SHARES * Double.parseDouble(currentPrice)) - (stock.orders[i].PRICE * stock.orders[i].SHARES);
+
+            text.setText("<html><body>" + Ordername + "<br> <br>"
+                    + "You have bought " + stock.orders[i].SHARES + " shares" + "<br> <br>"
+                    + "You bought these shares at a price of $" + stock.orders[i].PRICE + " CAD per share<br> <br>"
+                    + "The current price per share is $" + currentPrice + " CAD<br> <br>"
+                    + "Your net income from this trade is " + calculation + "</body></html>");
+        }else{
+            fileHandler.loadAccount();
+            String name = stock.NAME;
+            double averagePrice = stock.totalValue() / stock.STOCKS;
+            String currentPrice = fileHandler.readAccount(name.substring(0, name.indexOf(".")), name.substring(name.indexOf(".")));
+            double calculation = (stock.STOCKS * Double.parseDouble(currentPrice)) - (stock.totalValue());
+            
+            text.setText("<html><body>" + "SUMMARY: " + name + "<br> <br>"
+                    + "You have made " + stock.NUM_OF_ORDERS + " orders" + "<br> <br>"
+                    + "You own " + stock.STOCKS + " shares" + "<br> <br>"
+                    + "With a total value of $" + stock.totalValue() + " CAD" + "<br> <br>"
+                    + "At an average price of $" + averagePrice + " CAD per share<br> <br>"
+                    + "The current price per share is $" + currentPrice + " CAD<br> <br>"
+                    + "Your net income from this trade is " + calculation + "</body></html>");
+        }
     }
 
     /**

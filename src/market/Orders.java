@@ -16,24 +16,30 @@ import javax.swing.JButton;
  *
  * @author Purew
  */
-public class Orders extends javax.swing.JFrame implements ActionListener{
-    
+public class Orders extends javax.swing.JFrame implements ActionListener {
+
     JButton[] buttons;
     Stocks stock;
+
     /**
      * Creates new form Orders
      */
     public Orders(Stocks stock) {
         initComponents();
         this.stock = stock;
-        buttons = new JButton[stock.orders.length];
-        for (int i = 0; i < buttons.length; i++) {
+        buttons = new JButton[stock.orders.length + 1];
+        for (int i = 0; i < stock.orders.length; i++) {
             buttons[i] = new JButton(stock.orders[i].DATE);
             buttons[i].setBounds(0, i * 100, 750, 100);
             buttons[i].setVisible(true);
             buttons[i].addActionListener(this);
             jPanel1.add(buttons[i]);
         }
+        buttons[buttons.length - 1] = new JButton("SUMMARY");
+        buttons[buttons.length - 1].setBounds(0, (buttons.length - 1) * 100, 750, 100);
+        buttons[buttons.length - 1].setVisible(true);
+        buttons[buttons.length - 1].addActionListener(this);
+        jPanel1.add(buttons[buttons.length - 1]);
     }
 
     /**
@@ -124,14 +130,23 @@ public class Orders extends javax.swing.JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         String action = ae.getActionCommand();
-         for (int i = 0; i < buttons.length; i++) {
-             if(buttons[i].getText().equals(action)){
-                 try {
-                     new OrderInfo(stock, i).setVisible(true);
-                 } catch (IOException ex) {
-                     Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-             }
-         }
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons[i].getText().equals(action)) {
+                if (action.equalsIgnoreCase("Summary")) {
+                    try {
+                        new OrderInfo(stock, -1).setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    try {
+                        new OrderInfo(stock, i).setVisible(true);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        }
     }
 }

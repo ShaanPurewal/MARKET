@@ -40,5 +40,6 @@ public class Stocks {
         
         return value;
     }
+
     
 }
