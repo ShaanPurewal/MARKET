@@ -13,23 +13,26 @@ import java.util.logging.Logger;
  *
  * @author Purew
  */
-public class InvestmentsInfo extends javax.swing.JFrame {
+public class OrderInfo extends javax.swing.JFrame {
     
     FileHandler fileHandler = new FileHandler();
     
     /**
      * Creates new form InvestmentsInfo
      */
-    public InvestmentsInfo(Stocks stock) throws IOException {
+    public OrderInfo(Stocks stock, int i) throws IOException {
         initComponents();
+        
+        
+        String Ordername = stock.orders[i].TKR;
         String name = stock.NAME;
         fileHandler.loadAccount();
         String currentPrice = fileHandler.readAccount(name.substring(0, name.indexOf(".")), name.substring(name.indexOf(".")));
-        double calculation = (stock.STOCKS * Double.parseDouble(currentPrice)) - (stock.BUY_VALUE * stock.STOCKS);
+        double calculation = (stock.STOCKS * Double.parseDouble(currentPrice)) - (stock.orders[i].PRICE * stock.STOCKS);
         
-        text.setText("<html><body>" + name + "<br> <br>" + 
-                "You own " + stock.STOCKS + " shares" + "<br> <br>" +
-                "You bought these shares at a price of $" + stock.BUY_VALUE + " CAD<br> <br>" +
+        text.setText("<html><body>" + Ordername + "<br> <br>" + 
+                "You own " + stock.orders[i].SHARES + " shares" + "<br> <br>" +
+                "You bought these shares at a price of $" + stock.orders[i].PRICE + " CAD<br> <br>" +
                 "The current price per share is $" + currentPrice + " CAD<br> <br>" +
                 "Your net income from this trade is " + calculation + "</body></html>");
     }
@@ -80,23 +83,24 @@ public class InvestmentsInfo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InvestmentsInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InvestmentsInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InvestmentsInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InvestmentsInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new InvestmentsInfo(null).setVisible(true);
+                    new OrderInfo(null, 0).setVisible(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(InvestmentsInfo.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OrderInfo.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

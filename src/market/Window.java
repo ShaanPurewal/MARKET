@@ -29,7 +29,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     static String EXCHANGE = ".TO";
     static String currentPage = "Main";
 
-    private static String getTime() {
+    public static String getTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss a");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);

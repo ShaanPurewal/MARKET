@@ -16,37 +16,25 @@ import javax.swing.JButton;
  *
  * @author Purew
  */
-public class Investments extends javax.swing.JFrame implements ActionListener{
-
-    /**
-     * Creates new form Investments
-     */
+public class Orders extends javax.swing.JFrame implements ActionListener{
     
     JButton[] buttons;
-    Stocks[] stock;
-    
-    public Investments(Stocks[] stocks) {
+    Stocks stock;
+    /**
+     * Creates new form Orders
+     */
+    public Orders(Stocks stock) {
         initComponents();
-        
-        this.stock = stocks;
-        buttons = new JButton[stocks.length];
-        for (int i = 0; i < stocks.length; i++) {
-            buttons[i] = new JButton(stocks[i].NAME);
+        this.stock = stock;
+        buttons = new JButton[stock.orders.length];
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i] = new JButton(stock.orders[i].DATE);
             buttons[i].setBounds(0, i * 100, 750, 100);
             buttons[i].setVisible(true);
             buttons[i].addActionListener(this);
             jPanel1.add(buttons[i]);
         }
     }
-    
-     public void actionPerformed(ActionEvent e){
-         String action = e.getActionCommand();
-         for (int i = 0; i < buttons.length; i++) {
-             if(buttons[i].getText().equals(action)){
-                 new Orders(stock[i]).setVisible(true);
-             }
-         }
-     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,17 +49,16 @@ public class Investments extends javax.swing.JFrame implements ActionListener{
         jPanel1 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
-        setResizable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 826, Short.MAX_VALUE)
+            .addGap(0, 798, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1209, Short.MAX_VALUE)
+            .addGap(0, 598, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -80,13 +67,15 @@ public class Investments extends javax.swing.JFrame implements ActionListener{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1034, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 143, Short.MAX_VALUE))
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1))
         );
 
         pack();
@@ -109,20 +98,20 @@ public class Investments extends javax.swing.JFrame implements ActionListener{
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Investments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Orders.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Investments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Orders.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Investments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Orders.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Investments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Orders.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Investments(null).setVisible(true);
+                new Orders(null).setVisible(true);
             }
         });
     }
@@ -131,4 +120,18 @@ public class Investments extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        String action = ae.getActionCommand();
+         for (int i = 0; i < buttons.length; i++) {
+             if(buttons[i].getText().equals(action)){
+                 try {
+                     new OrderInfo(stock, i).setVisible(true);
+                 } catch (IOException ex) {
+                     Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         }
+    }
 }
