@@ -65,17 +65,17 @@ public class Window extends javax.swing.JFrame implements ActionListener {
         text = new javax.swing.JLabel();
         SEARCH = new javax.swing.JButton();
         ACCOUNT = new javax.swing.JButton();
-        CONFIG = new javax.swing.JButton();
-        accountInfo = new javax.swing.JLabel();
         INVESTMENTS = new javax.swing.JButton();
-        MAIN = new javax.swing.JButton();
         SHARES = new javax.swing.JTextField();
         TKRSYM = new javax.swing.JTextField();
         MARKET = new javax.swing.JTextField();
+        CONFIG = new javax.swing.JButton();
+        MAIN = new javax.swing.JButton();
+        accountInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MARKET TIME! - Shaan Purewal");
-        setMinimumSize(new java.awt.Dimension(1600, 1200));
+        setMinimumSize(new java.awt.Dimension(741, 708));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -84,14 +84,14 @@ public class Window extends javax.swing.JFrame implements ActionListener {
         });
         getContentPane().setLayout(null);
 
-        text.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        text.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         text.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         text.setText("MARKET");
         text.setToolTipText("");
         text.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         text.setAlignmentX(0.5F);
         getContentPane().add(text);
-        text.setBounds(390, 40, 685, 310);
+        text.setBounds(30, 10, 620, 160);
 
         SEARCH.setText("BANK");
         SEARCH.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +100,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
             }
         });
         getContentPane().add(SEARCH);
-        SEARCH.setBounds(690, 710, 159, 92);
+        SEARCH.setBounds(290, 570, 159, 92);
 
         ACCOUNT.setText("ACCOUNT");
         ACCOUNT.addActionListener(new java.awt.event.ActionListener() {
@@ -109,22 +109,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
             }
         });
         getContentPane().add(ACCOUNT);
-        ACCOUNT.setBounds(240, 710, 159, 92);
-
-        CONFIG.setText("CONFIG");
-        CONFIG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CONFIGActionPerformed(evt);
-            }
-        });
-        getContentPane().add(CONFIG);
-        CONFIG.setBounds(1150, 712, 159, 92);
-
-        accountInfo.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        accountInfo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        accountInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        getContentPane().add(accountInfo);
-        accountInfo.setBounds(30, 190, 850, 900);
+        ACCOUNT.setBounds(40, 570, 159, 92);
 
         INVESTMENTS.setText("INVESTMENTS");
         INVESTMENTS.addActionListener(new java.awt.event.ActionListener() {
@@ -133,7 +118,28 @@ public class Window extends javax.swing.JFrame implements ActionListener {
             }
         });
         getContentPane().add(INVESTMENTS);
-        INVESTMENTS.setBounds(1400, 1060, 159, 92);
+        INVESTMENTS.setBounds(40, 570, 159, 92);
+
+        SHARES.setText("Please enter the amount of shares to be bought");
+        getContentPane().add(SHARES);
+        SHARES.setBounds(40, 450, 670, 50);
+
+        TKRSYM.setText("Please enter the TKR Symbol of the requested stock");
+        getContentPane().add(TKRSYM);
+        TKRSYM.setBounds(40, 330, 670, 50);
+
+        MARKET.setText("Please enter the appropriate market extension");
+        getContentPane().add(MARKET);
+        MARKET.setBounds(40, 390, 670, 50);
+
+        CONFIG.setText("CONFIG");
+        CONFIG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CONFIGActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CONFIG);
+        CONFIG.setBounds(540, 570, 159, 92);
 
         MAIN.setText("MAIN");
         MAIN.addActionListener(new java.awt.event.ActionListener() {
@@ -142,19 +148,13 @@ public class Window extends javax.swing.JFrame implements ActionListener {
             }
         });
         getContentPane().add(MAIN);
-        MAIN.setBounds(1400, 40, 159, 92);
+        MAIN.setBounds(540, 570, 159, 92);
 
-        SHARES.setText("Please enter the amount of shares to be bought");
-        getContentPane().add(SHARES);
-        SHARES.setBounds(60, 460, 670, 50);
-
-        TKRSYM.setText("Please enter the TKR Symbol of the requested stock");
-        getContentPane().add(TKRSYM);
-        TKRSYM.setBounds(60, 340, 670, 50);
-
-        MARKET.setText("Please enter the appropriate market extension");
-        getContentPane().add(MARKET);
-        MARKET.setBounds(60, 400, 670, 50);
+        accountInfo.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        accountInfo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        accountInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        getContentPane().add(accountInfo);
+        accountInfo.setBounds(0, 180, 740, 530);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
