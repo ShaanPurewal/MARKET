@@ -8,22 +8,29 @@ package market;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
  * @author Purew
  */
 public class OrderInfo extends javax.swing.JFrame {
-
-    FileHandler fileHandler = new FileHandler();
-
+    
+    FileHandler fileHandler;
+    Stocks stock;
+    JFrame invest;
+    JFrame orders;
     /**
      * Creates new form InvestmentsInfo
      */
-    public OrderInfo(Stocks stock, int i) throws IOException {
+    public OrderInfo(Stocks stock, int i, JFrame inv, JFrame ord) throws IOException {
         initComponents();
-
+        invest = inv;
+        orders = ord;
+        fileHandler = Window.fileHandler;
+        this.stock = stock;
         if (i != -1) {
+            SELL.setVisible(false);
             String Ordername = stock.orders[i].TKR;
             String name = stock.NAME;
             fileHandler.loadAccount();
@@ -62,24 +69,50 @@ public class OrderInfo extends javax.swing.JFrame {
     private void initComponents() {
 
         text = new javax.swing.JLabel();
+        SELL = new javax.swing.JButton();
 
         text.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         text.setText("jLabel1");
         text.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        SELL.setText("SELL");
+        SELL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SELLActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SELL))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(SELL, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SELLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SELLActionPerformed
+        try {
+            fileHandler.removeAcc(stock, stock.STOCKS);
+            invest.dispose();
+            orders.dispose();
+            this.dispose();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(OrderInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SELLActionPerformed
 
     /**
      * @param args the command line arguments
@@ -113,7 +146,7 @@ public class OrderInfo extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new OrderInfo(null, 0).setVisible(true);
+                    new OrderInfo(null, -1, null, null).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(OrderInfo.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -122,6 +155,7 @@ public class OrderInfo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SELL;
     private javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables
 }

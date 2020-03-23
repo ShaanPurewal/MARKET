@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  *
@@ -20,23 +21,25 @@ public class Orders extends javax.swing.JFrame implements ActionListener {
 
     JButton[] buttons;
     Stocks stock;
+    JFrame inv;
 
     /**
      * Creates new form Orders
      */
-    public Orders(Stocks stock) {
+    public Orders(Stocks stock, JFrame frame) {
         initComponents();
+        inv = frame;
         this.stock = stock;
         buttons = new JButton[stock.orders.length + 1];
         for (int i = 0; i < stock.orders.length; i++) {
             buttons[i] = new JButton(stock.orders[i].DATE);
-            buttons[i].setBounds(0, i * 100, 750, 100);
+            buttons[i].setBounds(0, i * 75, 375, 75);
             buttons[i].setVisible(true);
             buttons[i].addActionListener(this);
             jPanel1.add(buttons[i]);
         }
         buttons[buttons.length - 1] = new JButton("SUMMARY");
-        buttons[buttons.length - 1].setBounds(0, (buttons.length - 1) * 100, 750, 100);
+        buttons[buttons.length - 1].setBounds(0, (buttons.length - 1) * 75, 375, 75);
         buttons[buttons.length - 1].setVisible(true);
         buttons[buttons.length - 1].addActionListener(this);
         jPanel1.add(buttons[buttons.length - 1]);
@@ -54,17 +57,25 @@ public class Orders extends javax.swing.JFrame implements ActionListener {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
 
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(400, 300));
+        setResizable(false);
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(400, 600));
+        jScrollPane1.setWheelScrollingEnabled(false);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(400, 1000));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 798, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 598, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -73,15 +84,15 @@ public class Orders extends javax.swing.JFrame implements ActionListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane1))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 700, Short.MAX_VALUE))
         );
 
         pack();
@@ -117,7 +128,7 @@ public class Orders extends javax.swing.JFrame implements ActionListener {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Orders(null).setVisible(true);
+                new Orders(null, null).setVisible(true);
             }
         });
     }
@@ -134,13 +145,13 @@ public class Orders extends javax.swing.JFrame implements ActionListener {
             if (buttons[i].getText().equals(action)) {
                 if (action.equalsIgnoreCase("Summary")) {
                     try {
-                        new OrderInfo(stock, -1).setVisible(true);
+                        new OrderInfo(stock, -1, inv, this).setVisible(true);
                     } catch (IOException ex) {
                         Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     try {
-                        new OrderInfo(stock, i).setVisible(true);
+                        new OrderInfo(stock, i, inv, this).setVisible(true);
                     } catch (IOException ex) {
                         Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
                     }

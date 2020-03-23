@@ -8,6 +8,9 @@ package market;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -17,18 +20,20 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 /**
  *
  * @author Purew
  */
-public class Window extends javax.swing.JFrame implements ActionListener {
+public class Window extends javax.swing.JFrame implements ActionListener, KeyListener {
 
     static Timer timer = new Timer();
     static FileHandler fileHandler = new FileHandler();
     static String EXCHANGE = ".TO";
     static String currentPage = "Main";
     static String decision = "CLOSED";
+    static boolean ADMIN = false;
 
     public static String getTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E, dd-MMM-yyyy HH:mm:ss a");
@@ -51,6 +56,12 @@ public class Window extends javax.swing.JFrame implements ActionListener {
         MARKET.addActionListener(this);
         SHARES.addActionListener(this);
         TKRSYM.addActionListener(this);
+        SEARCH.addKeyListener(this);
+        CONFIG.addKeyListener(this);
+
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
     }
 
     /**
@@ -164,19 +175,21 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_ACCOUNTActionPerformed
 
     private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
-        if(decision.equalsIgnoreCase("CLOSED")){
+        if (decision.equalsIgnoreCase("CLOSED") && ADMIN == false) {
             JOptionPane.showMessageDialog(this, "The MARKET is currently closed!");
-        }else{
+        } else {
             openBank();
         }
     }//GEN-LAST:event_SEARCHActionPerformed
 
     private void CONFIGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CONFIGActionPerformed
         Desktop desk = Desktop.getDesktop();
-        try {
-            desk.open(new File("config.txt"));
-        } catch (IOException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        if (ADMIN) {
+            try {
+                desk.open(new File("config.txt"));
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_CONFIGActionPerformed
 
@@ -249,16 +262,17 @@ public class Window extends javax.swing.JFrame implements ActionListener {
     private static javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables
 
-    private static void runTime() {
+    public static void runTime() {
         String MASTER = getTime();
         String DAY = MASTER.substring(0, MASTER.indexOf(" ") - 1);
         String TIME = MASTER.substring(MASTER.indexOf(":") - 2);
         int HOUR = Integer.parseInt(TIME.substring(0, 2));
         int MINUTE = Integer.parseInt(TIME.substring(3, 5));
-
+        
+        
         if (DAY.equalsIgnoreCase("Sat") || DAY.equalsIgnoreCase("Sun")) {
             decision = "CLOSED";
-        }else{
+        } else {
             if (HOUR < 16 && HOUR >= 10) {
                 decision = "OPEN";
             } else if (HOUR == 9 && MINUTE >= 30) {
@@ -267,7 +281,7 @@ public class Window extends javax.swing.JFrame implements ActionListener {
                 decision = "CLOSED";
             }
         }
-
+        
         text.setText("<html><body><center>The current date is: " + MASTER + "<br>and the market is " + decision + "</center></body></html>");
     }
 
@@ -366,6 +380,36 @@ public class Window extends javax.swing.JFrame implements ActionListener {
                 }
             }
         }
+    }
+
+    
+    @Override
+    public void keyTyped(KeyEvent ke) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+
+        if (ke.getKeyChar() == 'a' && ke.getModifiers() == InputEvent.ALT_MASK) {
+            JPasswordField answer = new JPasswordField(4);
+            JOptionPane.showConfirmDialog(null, answer, "Enter the access pin to toggle ADMIN MODE", JOptionPane.OK_CANCEL_OPTION);
+            if (new String(answer.getPassword()).equals("2003")) {
+                if(ADMIN){
+                    ADMIN = false;
+                }else{
+                    ADMIN = true;
+                }
+                JOptionPane.showMessageDialog(this, "Correct", "ALERT", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect", "ALERT", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+
     }
 
 }

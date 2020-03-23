@@ -116,6 +116,29 @@ public class FileHandler {
         stocks[index].addOrder(tickerSymbol, stocksOwned, buyValue, Window.getTime());
     }
     
+    public void removeAcc(Stocks stock, int shares) throws IOException{
+        for (int i = 0; i < stocks.length; i++) {
+            if(stock.NAME.equalsIgnoreCase(stocks[i].NAME)){
+                BALANCE_LIQUID += ((double)shares * Double.parseDouble(readAccount(stock.TKR, ".TO")));
+                stock.STOCKS -= shares;
+                if(stock.STOCKS <= 0){
+                    Stocks[] temp = new Stocks[stocks.length - 1];
+                    for (int j = 0; j < i; j++) {
+                        temp[j] = stocks[j];
+                    }
+                    for (int j = i; j < temp.length; j++) {
+                        temp[j] = stocks[j + 1];
+                    }
+                    stocks = new Stocks[temp.length];
+                    stocks = temp;
+                    AMOUNT_OF_STOCKS--;
+                }
+            }
+        }
+        saveFile();
+        loadAccount();
+    }
+    
     public void saveFile() throws IOException{
         File file = new File("config.txt");
         FileWriter fileWriter = new FileWriter(file);
