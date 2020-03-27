@@ -56,7 +56,7 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         MARKET.addActionListener(this);
         SHARES.addActionListener(this);
         TKRSYM.addActionListener(this);
-        SEARCH.addKeyListener(this);
+        BANK.addKeyListener(this);
         CONFIG.addKeyListener(this);
 
         addKeyListener(this);
@@ -74,7 +74,7 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
     private void initComponents() {
 
         text = new javax.swing.JLabel();
-        SEARCH = new javax.swing.JButton();
+        BANK = new javax.swing.JButton();
         ACCOUNT = new javax.swing.JButton();
         INVESTMENTS = new javax.swing.JButton();
         SHARES = new javax.swing.JTextField();
@@ -83,6 +83,7 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         CONFIG = new javax.swing.JButton();
         MAIN = new javax.swing.JButton();
         accountInfo = new javax.swing.JLabel();
+        SELL = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MARKET TIME! - Shaan Purewal");
@@ -104,14 +105,14 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         getContentPane().add(text);
         text.setBounds(30, 10, 620, 160);
 
-        SEARCH.setText("BANK");
-        SEARCH.addActionListener(new java.awt.event.ActionListener() {
+        BANK.setText("BANK");
+        BANK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SEARCHActionPerformed(evt);
+                BANKActionPerformed(evt);
             }
         });
-        getContentPane().add(SEARCH);
-        SEARCH.setBounds(290, 570, 159, 92);
+        getContentPane().add(BANK);
+        BANK.setBounds(290, 570, 159, 92);
 
         ACCOUNT.setText("ACCOUNT");
         ACCOUNT.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +168,15 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         getContentPane().add(accountInfo);
         accountInfo.setBounds(0, 180, 740, 530);
 
+        SELL.setText("SELL");
+        SELL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SELLActionPerformed(evt);
+            }
+        });
+        getContentPane().add(SELL);
+        SELL.setBounds(290, 570, 159, 92);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -174,13 +184,13 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         openAccInfo();
     }//GEN-LAST:event_ACCOUNTActionPerformed
 
-    private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
+    private void BANKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BANKActionPerformed
         if (decision.equalsIgnoreCase("CLOSED") && ADMIN == false) {
             JOptionPane.showMessageDialog(this, "The MARKET is currently closed!");
         } else {
             openBank();
         }
-    }//GEN-LAST:event_SEARCHActionPerformed
+    }//GEN-LAST:event_BANKActionPerformed
 
     private void CONFIGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CONFIGActionPerformed
         Desktop desk = Desktop.getDesktop();
@@ -208,6 +218,10 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void SELLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SELLActionPerformed
+        openSell();
+    }//GEN-LAST:event_SELLActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,11 +265,12 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ACCOUNT;
+    private javax.swing.JButton BANK;
     private javax.swing.JButton CONFIG;
     private javax.swing.JButton INVESTMENTS;
     private javax.swing.JButton MAIN;
     private javax.swing.JTextField MARKET;
-    private javax.swing.JButton SEARCH;
+    private javax.swing.JButton SELL;
     private javax.swing.JTextField SHARES;
     private javax.swing.JTextField TKRSYM;
     private javax.swing.JLabel accountInfo;
@@ -268,8 +283,7 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         String TIME = MASTER.substring(MASTER.indexOf(":") - 2);
         int HOUR = Integer.parseInt(TIME.substring(0, 2));
         int MINUTE = Integer.parseInt(TIME.substring(3, 5));
-        
-        
+
         if (DAY.equalsIgnoreCase("Sat") || DAY.equalsIgnoreCase("Sun")) {
             decision = "CLOSED";
         } else {
@@ -281,14 +295,14 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
                 decision = "CLOSED";
             }
         }
-        
+
         text.setText("<html><body><center>The current date is: " + MASTER + "<br>and the market is " + decision + "</center></body></html>");
     }
 
     private void openMain() {
         ACCOUNT.setVisible(true);
         CONFIG.setVisible(true);
-        SEARCH.setVisible(true);
+        BANK.setVisible(true);
 
         accountInfo.setVisible(false);
         INVESTMENTS.setVisible(false);
@@ -296,6 +310,8 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         SHARES.setVisible(false);
         TKRSYM.setVisible(false);
         MARKET.setVisible(false);
+        SELL.setVisible(false);
+        
         timer.cancel();
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -310,15 +326,16 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
     private void openAccInfo() {
         ACCOUNT.setVisible(false);
         CONFIG.setVisible(false);
-        SEARCH.setVisible(false);
+        BANK.setVisible(false);
 
         accountInfo.setVisible(true);
         INVESTMENTS.setVisible(true);
         MAIN.setVisible(true);
+        SELL.setVisible(true);
         SHARES.setVisible(false);
         TKRSYM.setVisible(false);
         MARKET.setVisible(false);
-
+        
         accountInfo.setText("<html><body>Your current CASH BALANCE is: " + fileHandler.BALANCE_LIQUID + "<br>"
                 + "Your current STOCK VALUE is: " + fileHandler.BALANCE_STOCK + "<br>"
                 + "You have " + fileHandler.stocks.length + " INVESTMENTS"
@@ -332,10 +349,11 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
 
         ACCOUNT.setVisible(false);
         CONFIG.setVisible(false);
-        SEARCH.setVisible(false);
+        BANK.setVisible(false);
         accountInfo.setVisible(false);
         INVESTMENTS.setVisible(false);
-
+        SELL.setVisible(false);
+        
         MAIN.setVisible(true);
         SHARES.setVisible(true);
         TKRSYM.setVisible(true);
@@ -351,38 +369,82 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
         TKRSYM.selectAll();
     }
 
+    private void openSell() {
+        timer.cancel();
+
+        ACCOUNT.setVisible(false);
+        CONFIG.setVisible(false);
+        BANK.setVisible(false);
+        accountInfo.setVisible(false);
+        INVESTMENTS.setVisible(false);
+        SELL.setVisible(false);
+
+        MAIN.setVisible(true);
+        SHARES.setVisible(true);
+        TKRSYM.setVisible(true);
+        MARKET.setVisible(true);
+
+        text.setText("Welcome To The INVESTMENT Bank");
+        TKRSYM.setText("Please enter the TKR Symbol of the requested stock");
+        MARKET.setText("Please enter the appropriate market extension");
+        SHARES.setText("Please enter the amount of shares to be sold");
+
+        currentPage = "sell";
+        TKRSYM.requestFocus();
+        TKRSYM.selectAll();
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (currentPage.equalsIgnoreCase("Bank")) {
-            if (ae.getSource().equals(TKRSYM)) {
-                MARKET.requestFocus();
-                MARKET.selectAll();
-            } else if (ae.getSource().equals(MARKET)) {
-                SHARES.requestFocus();
-                SHARES.selectAll();
-            } else {
-                try {
-                    if (fileHandler.BALANCE_LIQUID >= (Double.parseDouble(SHARES.getText()) * Double.parseDouble(fileHandler.readAccount(TKRSYM.getText(), MARKET.getText())))) {
-                        int answer = JOptionPane.showConfirmDialog(this, "Are you sure?", "Confirmation Window", JOptionPane.YES_NO_OPTION);
-                        if (answer == JOptionPane.YES_OPTION) {
-                            fileHandler.buyAccount(TKRSYM.getText(), MARKET.getText(), Integer.parseInt(SHARES.getText()));
-                            fileHandler.saveFile();
-                            text.setText("Purchase Complete");
-                        } else {
-                            text.setText("Order Cancelled");
-                        }
+        if (ae.getSource().equals(TKRSYM)) {
+            MARKET.requestFocus();
+            MARKET.selectAll();
+        } else if (ae.getSource().equals(MARKET)) {
+            SHARES.requestFocus();
+            SHARES.selectAll();
+        } else if (currentPage.equalsIgnoreCase("Bank")) {
 
+            try {
+                if (fileHandler.BALANCE_LIQUID >= (Double.parseDouble(SHARES.getText()) * Double.parseDouble(fileHandler.readAccount(TKRSYM.getText(), MARKET.getText())))) {
+                    int answer = JOptionPane.showConfirmDialog(this, "Are you sure?", "Confirmation Window", JOptionPane.YES_NO_OPTION);
+                    if (answer == JOptionPane.YES_OPTION) {
+                        fileHandler.buyAccount(TKRSYM.getText(), MARKET.getText(), Integer.parseInt(SHARES.getText()));
+                        fileHandler.saveFile();
+                        text.setText("Purchase Complete");
                     } else {
-                        text.setText("Insufficient Funds");
+                        text.setText("Order Cancelled");
                     }
+
+                } else {
+                    text.setText("Insufficient Funds");
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            int answer = JOptionPane.showConfirmDialog(this, "Are you sure?", "Confirmation Window", JOptionPane.YES_NO_OPTION);
+            if (answer == JOptionPane.YES_OPTION) {
+                try {
+                    Stocks stock = null;
+                    for (int i = 0; i < fileHandler.stocks.length; i++) {
+                        if(fileHandler.stocks[i].NAME.equalsIgnoreCase(TKRSYM.getText() + MARKET.getText())){
+                            stock = fileHandler.stocks[i];
+                        }
+                    }
+                    fileHandler.removeAcc(stock, Integer.parseInt(SHARES.getText()));
+                    fileHandler.saveFile();
+                    text.setText("Purchase Complete");
                 } catch (IOException ex) {
                     Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                text.setText("Order Cancelled");
             }
         }
+
     }
 
-    
     @Override
     public void keyTyped(KeyEvent ke) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -390,14 +452,15 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
 
     @Override
     public void keyPressed(KeyEvent ke) {
-
+        System.out.println(ke.getKeyChar());
+        System.out.println(ke.getModifiersEx());
         if (ke.getKeyChar() == 'a' && ke.getModifiers() == InputEvent.ALT_MASK) {
             JPasswordField answer = new JPasswordField(4);
             JOptionPane.showConfirmDialog(null, answer, "Enter the access pin to toggle ADMIN MODE", JOptionPane.OK_CANCEL_OPTION);
             if (new String(answer.getPassword()).equals("2003")) {
-                if(ADMIN){
+                if (ADMIN) {
                     ADMIN = false;
-                }else{
+                } else {
                     ADMIN = true;
                 }
                 JOptionPane.showMessageDialog(this, "Correct", "ALERT", JOptionPane.WARNING_MESSAGE);
