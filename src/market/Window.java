@@ -33,7 +33,7 @@ public class Window extends javax.swing.JFrame implements ActionListener, KeyLis
     static String EXCHANGE = ".TO";
     static String currentPage = "Main";
     static String decision = "CLOSED";
-    static boolean ADMIN = false;
+    static boolean ADMIN = true;
 
     public static String getTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E, dd-MMM-yyyy HH:mm:ss a");
